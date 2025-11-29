@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) [2025] [Alwin Chemmannoor Sheejoy]
+ *
+ * This file is part of the Advanced Markdown Editor PWA.
+ *
+ * This software is licensed under the GNU General Public License, Version 3.
+ * See the accompanying LICENSE file for details.
+ */
+//
+
 /* Extended editor script.js
    Adds:
    - dual editors (text <-> markdown)
@@ -7,15 +17,6 @@
    - pdf export (html2pdf)
    - PWA registration done in index.html (sw.js must be created)
 */
-/*
- * Copyright (C) [2025] [Alwin Chemmannoor Sheejoy]
- *
- * This file is part of the Advanced Markdown Editor PWA.
- *
- * This software is licensed under the GNU General Public License, Version 3.
- * See the accompanying LICENSE file for details.
- */
-// (rest of your script.js code)
 // Elements
 const textEditor = document.getElementById('textEditor'); // plain text pane
 const editor = document.getElementById('editor'); // markdown pane
