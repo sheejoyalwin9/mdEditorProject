@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Advanced Markdown Editor (Extended)</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/github-dark.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js/lib/common.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/auto-render.min.js"></script>
+
+  <!-- html2pdf for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>MD Editor</h1>
+      <small>Advanced — Text / MD / Preview • Explorer • AI • PWA</small>
+    </div>
+
+    <div class="controls">
+      <div id="toolbar" class="toolbar" role="toolbar" aria-label="Formatting toolbar">
+        <button title="Bold" data-cmd="bold"><b>B</b></button>
+        <button title="Italic" data-cmd="italic"><i>I</i></button>
+        <button title="H1" data-cmd="h1">H1</button>
+        <button title="UL" data-cmd="ul">• List</button>
+        <button title="Code block" data-cmd="code">code</button>
+        <button title="Insert link" data-cmd="link">link</button>
+      </div>
+
+      <div class="right-controls">
+        <input id="imgUpload" type="file" accept="image/*" title="Upload image" />
+        <input id="fileOpen" type="file" accept=".md,text/markdown,text/plain" title="Open .md file" style="display:none" />
+
+        <button id="newDoc" title="New document">New</button>
+        <button id="saveDoc" title="Save document">Save</button>
+        <button id="downloadMd" title="Download .md">Download .md</button>
+        <button id="downloadHtml" title="Download HTML">Download .html</button>
+        <button id="exportPdf" title="Export to PDF">Export PDF</button>
+
+        <button id="themeToggle" title="Toggle dark mode">Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app">
+    <!-- Explorer -->
+    <aside class="explorer">
+      <div class="explorer-header">
+        <strong>Files</strong>
+        <button id="createFile">＋</button>
+      </div>
+      <ul id="fileList" class="file-list"></ul>
+      <div class="explorer-footer">
+        <button id="importMd">Import .md</button>
+        <button id="clearAll">Clear All</button>
+      </div>
+    </aside>
+
+    <!-- Editor Area: Text | Markdown | Preview -->
+    <section class="editor-area">
+      <div class="pane pane-left">
+        <label class="pane-label">Plain Text</label>
+        <textarea id="textEditor" placeholder="Write normal text..."></textarea>
+      </div>
+
+      <div class="splitter" id="splitter"></div>
+
+      <div class="pane pane-center">
+        <label class="pane-label">Markdown</label>
+        <textarea id="editor" aria-label="Markdown editor"></textarea>
+      </div>
+
+      <div class="splitter" id="splitter2"></div>
+
+      <div class="pane pane-right">
+        <label class="pane-label">Preview</label>
+        <div id="preview" class="preview" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- AI Assistant Sidebar -->
+    <aside class="ai-panel" id="aiPanel">
+      <div class="ai-header">
+        <strong>AI Assistant</strong>
+        <button id="aiClose">✕</button>
+      </div>
+
+      <div class="ai-controls">
+        <select id="aiAction">
+          <option value="summarize">Summarize</option>
+          <option value="expand">Expand</option>
+          <option value="rewrite">Rewrite</option>
+          <option value="extract_headings">Extract Headings</option>
+        </select>
+        <textarea id="aiPrompt" placeholder="Optional instruction (e.g. 'Make it formal')"></textarea>
+        <button id="aiRun">Run</button>
+
+        <hr/>
+        <label>Optional: OpenAI API Key (for better results)</label>
+        <input id="openAiKey" type="password" placeholder="sk-..." />
+        <small class="note">Providing an OpenAI key enables remote AI. Use at your discretion.</small>
+      </div>
+
+      <div class="ai-output" id="aiOutput" contenteditable="false"></div>
+      <div class="ai-footer">
+        <button id="insertAi">Insert to MD</button>
+        <button id="copyAi">Copy</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <span id="status">Autosave: ready</span>
+    <span class="spacer"></span>
+    <small>Built for learning & extension</small>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // register service worker for PWA (sw.js must exist)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(() => {
+        console.log('Service worker registered');
+      }).catch(err => console.warn('SW registration failed', err));
+    }
+  </script>
+</body>
+</html>
